@@ -1,3 +1,4 @@
+// Enregistrer le Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js')
   .then((registration) => {
@@ -7,6 +8,8 @@ if ('serviceWorker' in navigator) {
     console.log('Erreur lors de l\'enregistrement du Service Worker:', error);
   });
 }
+
+// Demander la permission pour les notifications
 if ('Notification' in window) {
   Notification.requestPermission()
   .then((permission) => {
@@ -17,6 +20,7 @@ if ('Notification' in window) {
     }
   });
 }
+
 function scheduleDailyNotification() {
   // Ici, nous utilisons setTimeout pour la démonstration.
   // Pour une notification quotidienne réelle, vous devrez utiliser une technique côté serveur ou une API plus avancée.
@@ -34,15 +38,47 @@ function showNotification() {
     });
   });
 }
+
+// Sélection des éléments
 const confirmBtn = document.getElementById('confirm-btn');
-confirmBtn.addEventListener('click', () => {
-  const today = new Date().toLocaleDateString();
-  localStorage.setItem(today, 'pris');
-  alert('Prise confirmée pour le ' + today);
-});
+const confirmationMessage = document.getElementById('confirmation-message');
 const photoBtn = document.getElementById('photo-btn');
 const mediaArea = document.getElementById('media-area');
 
+// Fonction pour obtenir la date du jour au format 'YYYY-MM-DD'
+function getTodayDateKey() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Fonction pour vérifier l'état de la prise
+function checkMedicationStatus() {
+  const today = getTodayDateKey();
+  const status = localStorage.getItem(today);
+
+  if (status === 'pris') {
+    confirmationMessage.textContent = `✅ Vous avez déjà pris vos médicaments aujourd'hui (${today}).`;
+  } else {
+    confirmationMessage.textContent = `❗ Vous n'avez pas encore pris vos médicaments aujourd'hui.`;
+  }
+}
+
+// Événement lors du clic sur le bouton de confirmation
+confirmBtn.addEventListener('click', () => {
+  const today = getTodayDateKey();
+  localStorage.setItem(today, 'pris');
+
+  // Mettre à jour le message de confirmation
+  confirmationMessage.textContent = `✅ Vous avez pris vos médicaments le ${today}.`;
+});
+
+// Vérifier l'état de la prise au chargement de la page
+checkMedicationStatus();
+
+// Gérer la prise de photo
 photoBtn.addEventListener('click', () => {
   if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
     navigator.mediaDevices.getUserMedia({ video: true })
