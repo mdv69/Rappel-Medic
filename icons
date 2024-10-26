@@ -3,4 +3,8 @@ rappel-medicaments/
 ├── app.js
 ├── styles.css
 ├── manifest.json
+├── service-worker.js
 ├── apple-touch-icon.png
+└── icons/
+    ├── icon-192.png
+    └── icon-512.png
