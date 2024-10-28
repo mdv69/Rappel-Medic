@@ -93,8 +93,6 @@ confirmBtn.addEventListener('click', () => {
 // Vérifier l'état de la prise au chargement de la page
 checkMedicationStatus();
 
-// ... Votre code existant ...
-
 // Variable pour l'état de la caméra (false par défaut pour utiliser la caméra arrière)
 let useFrontCamera = false;
 
@@ -115,6 +113,7 @@ function startCamera() {
       .then((stream) => {
         const video = document.createElement('video');
         video.autoplay = true;
+        video.playsInline = true; // Empêcher le plein écran sur mobile
         video.srcObject = stream;
 
         // Sélection du conteneur de la caméra
@@ -124,17 +123,22 @@ function startCamera() {
         // Ajouter la vidéo au conteneur
         cameraContainer.appendChild(video);
 
+        // Créer un conteneur pour les boutons
+        const controlsContainer = document.createElement('div');
+        controlsContainer.id = 'controls-container';
+        cameraContainer.appendChild(controlsContainer);
+
         // Bouton pour changer de caméra
         const switchCameraBtn = document.createElement('button');
         switchCameraBtn.textContent = 'Changer de caméra';
-        switchCameraBtn.id = 'switch-camera-btn'; // Attribuer un ID pour le style
-        cameraContainer.appendChild(switchCameraBtn);
+        switchCameraBtn.id = 'switch-camera-btn';
+        controlsContainer.appendChild(switchCameraBtn);
 
         // Bouton pour capturer la photo
         const captureBtn = document.createElement('button');
         captureBtn.textContent = 'Capturer la photo';
-        captureBtn.id = 'capture-btn'; // Attribuer un ID pour le style
-        cameraContainer.appendChild(captureBtn);
+        captureBtn.id = 'capture-btn';
+        controlsContainer.appendChild(captureBtn);
 
         // Événement pour changer de caméra
         switchCameraBtn.onclick = () => {
@@ -157,8 +161,7 @@ function startCamera() {
           // Arrêter la vidéo
           stream.getTracks().forEach(track => track.stop());
           video.remove();
-          switchCameraBtn.remove();
-          captureBtn.remove();
+          controlsContainer.remove();
 
           // Afficher la photo capturée
           const img = document.createElement('img');
@@ -169,9 +172,9 @@ function startCamera() {
           mediaArea.innerHTML = '';
           mediaArea.appendChild(img);
 
-          // Enregistrer la photo en local (optionnel)
-          const photoKey = 'photo-' + Date.now();
-          localStorage.setItem(photoKey, img.src);
+          // Enregistrer la photo en local avec la date du jour
+          const today = getTodayDateKey();
+          localStorage.setItem('photo-' + today, img.src);
         };
       })
       .catch((error) => {
@@ -183,3 +186,28 @@ function startCamera() {
   }
 }
 
+// Fonction pour afficher la photo enregistrée si elle existe
+function displaySavedPhoto() {
+  const today = getTodayDateKey();
+  const savedPhotoKey = 'photo-' + today;
+  const savedPhoto = localStorage.getItem(savedPhotoKey);
+
+  // Supprimer les photos des jours précédents
+  for (let key in localStorage) {
+    if (key.startsWith('photo-') && key !== savedPhotoKey) {
+      localStorage.removeItem(key);
+    }
+  }
+
+  if (savedPhoto) {
+    const img = document.createElement('img');
+    img.src = savedPhoto;
+
+    const mediaArea = document.getElementById('media-area');
+    mediaArea.innerHTML = ''; // Nettoyer la zone média
+    mediaArea.appendChild(img);
+  }
+}
+
+// Appeler la fonction au chargement de la page
+displaySavedPhoto();
