@@ -25,13 +25,45 @@ button:hover {
   cursor: pointer;
 }
 
+/* Styles pour le conteneur de la caméra */
 #media-area {
-  margin-top: 20px;
+  position: relative;
 }
 
-video, img {
-  max-width: 100%;
+#camera-container {
+  position: relative;
+  display: inline-block;
+}
+
+#camera-container video {
+  width: 100%;
   height: auto;
+}
+
+/* Styles pour les boutons sur la caméra */
+#camera-container button {
+  position: absolute;
+  bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#switch-camera-btn {
+  left: 20px;
+}
+
+#capture-btn {
+  right: 20px;
+}
+
+#media-area img {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
 }
 
 #motivational-phrase {
