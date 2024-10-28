@@ -93,6 +93,8 @@ confirmBtn.addEventListener('click', () => {
 // Vérifier l'état de la prise au chargement de la page
 checkMedicationStatus();
 
+// ... Votre code existant ...
+
 // Variable pour l'état de la caméra (false par défaut pour utiliser la caméra arrière)
 let useFrontCamera = false;
 
@@ -110,62 +112,74 @@ function startCamera() {
 
   if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
     navigator.mediaDevices.getUserMedia(constraints)
-    .then((stream) => {
-      const video = document.createElement('video');
-      video.autoplay = true;
-      video.srcObject = stream;
-      mediaArea.innerHTML = ''; // Nettoyer la zone média
-      mediaArea.appendChild(video);
+      .then((stream) => {
+        const video = document.createElement('video');
+        video.autoplay = true;
+        video.srcObject = stream;
 
-      // Bouton pour changer de caméra
-      const switchCameraBtn = document.createElement('button');
-      switchCameraBtn.textContent = 'Changer de caméra';
-      mediaArea.appendChild(switchCameraBtn);
+        // Sélection du conteneur de la caméra
+        const cameraContainer = document.getElementById('camera-container');
+        cameraContainer.innerHTML = ''; // Nettoyer le conteneur
 
-      // Bouton pour capturer la photo
-      const captureBtn = document.createElement('button');
-      captureBtn.textContent = 'Capturer la photo';
-      mediaArea.appendChild(captureBtn);
+        // Ajouter la vidéo au conteneur
+        cameraContainer.appendChild(video);
 
-      // Événement pour changer de caméra
-      switchCameraBtn.addEventListener('click', () => {
-        // Arrêter le flux vidéo actuel
-        stream.getTracks().forEach(track => track.stop());
-        // Basculer la caméra
-        useFrontCamera = !useFrontCamera;
-        // Redémarrer la caméra avec les nouveaux paramètres
-        startCamera();
+        // Bouton pour changer de caméra
+        const switchCameraBtn = document.createElement('button');
+        switchCameraBtn.textContent = 'Changer de caméra';
+        switchCameraBtn.id = 'switch-camera-btn'; // Attribuer un ID pour le style
+        cameraContainer.appendChild(switchCameraBtn);
+
+        // Bouton pour capturer la photo
+        const captureBtn = document.createElement('button');
+        captureBtn.textContent = 'Capturer la photo';
+        captureBtn.id = 'capture-btn'; // Attribuer un ID pour le style
+        cameraContainer.appendChild(captureBtn);
+
+        // Événement pour changer de caméra
+        switchCameraBtn.onclick = () => {
+          // Arrêter le flux vidéo actuel
+          stream.getTracks().forEach(track => track.stop());
+          // Basculer la caméra
+          useFrontCamera = !useFrontCamera;
+          // Redémarrer la caméra avec les nouveaux paramètres
+          startCamera();
+        };
+
+        // Événement pour capturer la photo
+        captureBtn.onclick = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0);
+
+          // Arrêter la vidéo
+          stream.getTracks().forEach(track => track.stop());
+          video.remove();
+          switchCameraBtn.remove();
+          captureBtn.remove();
+
+          // Afficher la photo capturée
+          const img = document.createElement('img');
+          img.src = canvas.toDataURL('image/png');
+
+          // Vider le conteneur de la caméra et afficher l'image
+          const mediaArea = document.getElementById('media-area');
+          mediaArea.innerHTML = '';
+          mediaArea.appendChild(img);
+
+          // Enregistrer la photo en local (optionnel)
+          const photoKey = 'photo-' + Date.now();
+          localStorage.setItem(photoKey, img.src);
+        };
+      })
+      .catch((error) => {
+        console.log('Erreur lors de l\'accès à la caméra:', error);
+        alert('Impossible d\'accéder à la caméra.');
       });
-
-      // Événement pour capturer la photo
-      captureBtn.addEventListener('click', () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
-
-        // Arrêter la vidéo
-        stream.getTracks().forEach(track => track.stop());
-        video.remove();
-        switchCameraBtn.remove();
-        captureBtn.remove();
-
-        // Afficher la photo capturée
-        const img = document.createElement('img');
-        img.src = canvas.toDataURL('image/png');
-        mediaArea.appendChild(img);
-
-        // Enregistrer la photo en local (optionnel)
-        const photoKey = 'photo-' + Date.now();
-        localStorage.setItem(photoKey, img.src);
-      });
-    })
-    .catch((error) => {
-      console.log('Erreur lors de l\'accès à la caméra:', error);
-      alert('Impossible d\'accéder à la caméra.');
-    });
   } else {
     alert('Accès à la caméra non supporté par ce navigateur.');
   }
 }
+
