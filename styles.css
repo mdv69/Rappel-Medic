@@ -28,16 +28,22 @@ button:hover {
 /* Styles pour le conteneur de la caméra */
 #media-area {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 #camera-container {
   position: relative;
-  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 #camera-container video {
   width: 100%;
   height: auto;
+  display: block;
 }
 
 /* Styles pour les boutons sur la caméra */
@@ -46,7 +52,7 @@ button:hover {
   bottom: 20px;
   background-color: rgba(0, 0, 0, 0.6);
   color: #fff;
-  padding: 10px;
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -64,6 +70,7 @@ button:hover {
   width: 100%;
   height: auto;
   margin-top: 20px;
+  display: block;
 }
 
 #motivational-phrase {
