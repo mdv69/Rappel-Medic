@@ -3,6 +3,7 @@ body {
   text-align: center;
   margin: 0;
   padding: 20px;
+  background-color: #d900ff82;
 }
 
 h1 {
@@ -32,3 +33,11 @@ video, img {
   max-width: 100%;
   height: auto;
 }
+
+#motivational-phrase {
+  font-size: 28px;
+  font-style: italic;
+  margin-bottom: 20px;
+  color: #d900ff;
+}
+
