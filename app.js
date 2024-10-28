@@ -9,41 +9,56 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Demander la permission pour les notifications
-if ('Notification' in window) {
-  Notification.requestPermission()
-  .then((permission) => {
-    if (permission === 'granted') {
-      scheduleDailyNotification();
-    } else {
-      alert('Les notifications sont désactivées. Vous ne recevrez pas de rappels.');
-    }
-  });
-}
-
-function scheduleDailyNotification() {
-  // Ici, nous utilisons setTimeout pour la démonstration.
-  // Pour une notification quotidienne réelle, vous devrez utiliser une technique côté serveur ou une API plus avancée.
-  setTimeout(() => {
-    showNotification();
-  }, 5000); // Notification après 5 secondes pour le test
-}
-
-function showNotification() {
-  navigator.serviceWorker.ready.then((registration) => {
-    registration.showNotification('Rappel Médicaments', {
-      body: 'Il est temps de prendre vos médicaments.',
-      icon: 'icons/icon-192.png',
-      tag: 'rappel-medicaments' // Permet de remplacer la notification précédente si elle existe
-    });
-  });
-}
-
 // Sélection des éléments
 const confirmBtn = document.getElementById('confirm-btn');
 const confirmationMessage = document.getElementById('confirmation-message');
 const photoBtn = document.getElementById('photo-btn');
 const mediaArea = document.getElementById('media-area');
+
+// **Nouveau code pour la phrase de motivation**
+// Sélection de l'élément où afficher la phrase
+const motivationalPhraseElement = document.getElementById('motivational-phrase');
+
+// Fonction pour afficher la phrase de motivation
+function displayMotivationalPhrase(phrase) {
+  motivationalPhraseElement.textContent = phrase;
+}
+
+// Fonction pour récupérer la phrase depuis l'API
+function fetchMotivationalPhrase() {
+  const today = new Date().toISOString().split('T')[0]; // Obtenir la date au format 'YYYY-MM-DD'
+  const cachedPhrase = localStorage.getItem('phrase-' + today);
+
+  if (cachedPhrase) {
+    // Si la phrase du jour est déjà en cache, l'afficher
+    displayMotivationalPhrase(cachedPhrase);
+  } else {
+    if (navigator.onLine) {
+      fetch('https://zenquotes.io/api/today')
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            const phrase = data[0].q + " — " + data[0].a;
+            displayMotivationalPhrase(phrase);
+            // Stocker la phrase dans le localStorage
+            localStorage.setItem('phrase-' + today, phrase);
+          } else {
+            displayMotivationalPhrase("Gardez le sourire, la vie est belle.");
+          }
+        })
+        .catch(error => {
+          console.log('Erreur lors de la récupération de la phrase :', error);
+          displayMotivationalPhrase("Gardez le sourire, la vie est belle.");
+        });
+    } else {
+      // L'utilisateur est hors ligne, afficher une phrase par défaut
+      displayMotivationalPhrase("Vous êtes plus fort que vous ne le pensez.");
+    }
+  }
+}
+
+// Appeler la fonction au chargement de la page
+fetchMotivationalPhrase();
 
 // Fonction pour obtenir la date du jour au format 'YYYY-MM-DD'
 function getTodayDateKey() {
@@ -78,10 +93,23 @@ confirmBtn.addEventListener('click', () => {
 // Vérifier l'état de la prise au chargement de la page
 checkMedicationStatus();
 
+// Variable pour l'état de la caméra (false par défaut pour utiliser la caméra arrière)
+let useFrontCamera = false;
+
 // Gérer la prise de photo
 photoBtn.addEventListener('click', () => {
+  startCamera();
+});
+
+function startCamera() {
+  const constraints = {
+    video: {
+      facingMode: useFrontCamera ? 'user' : 'environment'
+    }
+  };
+
   if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
       const video = document.createElement('video');
       video.autoplay = true;
@@ -89,11 +117,27 @@ photoBtn.addEventListener('click', () => {
       mediaArea.innerHTML = ''; // Nettoyer la zone média
       mediaArea.appendChild(video);
 
+      // Bouton pour changer de caméra
+      const switchCameraBtn = document.createElement('button');
+      switchCameraBtn.textContent = 'Changer de caméra';
+      mediaArea.appendChild(switchCameraBtn);
+
       // Bouton pour capturer la photo
       const captureBtn = document.createElement('button');
       captureBtn.textContent = 'Capturer la photo';
       mediaArea.appendChild(captureBtn);
 
+      // Événement pour changer de caméra
+      switchCameraBtn.addEventListener('click', () => {
+        // Arrêter le flux vidéo actuel
+        stream.getTracks().forEach(track => track.stop());
+        // Basculer la caméra
+        useFrontCamera = !useFrontCamera;
+        // Redémarrer la caméra avec les nouveaux paramètres
+        startCamera();
+      });
+
+      // Événement pour capturer la photo
       captureBtn.addEventListener('click', () => {
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth;
@@ -104,6 +148,7 @@ photoBtn.addEventListener('click', () => {
         // Arrêter la vidéo
         stream.getTracks().forEach(track => track.stop());
         video.remove();
+        switchCameraBtn.remove();
         captureBtn.remove();
 
         // Afficher la photo capturée
@@ -123,4 +168,4 @@ photoBtn.addEventListener('click', () => {
   } else {
     alert('Accès à la caméra non supporté par ce navigateur.');
   }
-});
+}
