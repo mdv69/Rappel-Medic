@@ -3,14 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const message = document.getElementById('confirmation-message');
 
   const today = new Date();
-  const todayKey = today.toISOString().split('T')[0]; // pour la clé localeStorage
+  const todayKey = today.toISOString().split('T')[0]; // clé pour localStorage
+
+  // Date formatée en français
   const formattedDate = today.toLocaleDateString('fr-FR', {
-    weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   });
 
+  // Vérifie si le médicament a déjà été pris aujourd’hui
   const takenToday = localStorage.getItem('taken-' + todayKey);
   if (takenToday === 'yes') {
     btn.classList.add('clicked');
@@ -18,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     message.textContent = `Médicaments pris le ${formattedDate}.`;
   }
 
-  // ✅ L’événement doit être en dehors du if
+  // Gère le clic sur le bouton
   btn.addEventListener('click', () => {
     localStorage.setItem('taken-' + todayKey, 'yes');
     btn.classList.add('clicked');
