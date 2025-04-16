@@ -15,17 +15,15 @@ body {
 }
 
 
-/* Encadré doux centré et semi-transparent */
 .container {
   text-align: center;
-  padding: 40px 30px;
-  background: rgba(255, 255, 255, 0.8); /* blanc légèrement transparent pour lisibilité */
-  border-radius: 30px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
   max-width: 90%;
-  width: 350px;
-  backdrop-filter: blur(4px); /* effet flou pour le fond */
 }
+
 
 /* Titre */
 h1 {
