@@ -2,40 +2,45 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Quicksand', sans-serif;
-  background-image: url('fond-medicaments.png'); /* ou 'images/fond-medicaments.png' si tu l’as mis dans un sous-dossier */
+  background-image: url('fond-medicaments.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: #444;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
 }
 
-
+/* Encadré doux centré et semi-transparent */
 .container {
   text-align: center;
-  padding: 30px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  background: rgba(255, 255, 255, 0.8); /* blanc légèrement transparent pour lisibilité */
+  border-radius: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   max-width: 90%;
+  width: 350px;
+  backdrop-filter: blur(4px); /* effet flou pour le fond */
 }
 
+/* Titre */
 h1 {
   font-size: 1.8rem;
-  color: #c86dd7;
-  margin-bottom: 10px;
+  color: #d94ec2;
+  margin-bottom: 15px;
 }
 
+/* Date du jour */
 #today-date {
   font-size: 1.2rem;
   margin-bottom: 20px;
 }
 
+/* Bouton principal */
 button {
-  background-color: #c86dd7;
+  background-color: #d94ec2;
   color: white;
   border: none;
   border-radius: 30px;
@@ -45,20 +50,23 @@ button {
   transition: all 0.3s ease;
 }
 
+/* Changement visuel après clic */
 button.clicked {
   background-color: #6fcf97;
 }
 
+/* Message de confirmation */
 #confirmation-message {
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 1rem;
   color: #6fcf97;
   font-weight: bold;
 }
 
+/* Message bienveillant */
 .quote {
-  margin-top: 30px;
+  margin-top: 40px;
   font-style: italic;
-  color: #a366b3;
-  font-size: 1.1rem;
+  color: #b469e3;
+  font-size: 1rem;
 }
