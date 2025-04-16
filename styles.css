@@ -30,6 +30,8 @@ h1 {
   font-size: 1.6rem;
   line-height: 1.4;
   word-wrap: break-word;
+  color: #ff80d5;
+  max-width: 280px;
 }
 
 /* Bouton principal */
