@@ -2,6 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow: hidden;
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -10,7 +11,7 @@ body {
   padding: 0;
   font-family: 'Quicksand', sans-serif;
   background-image: url('fond-medicaments.png'); /* adapte si besoin */
-  background-size: contain;
+ background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
