@@ -1,83 +1,60 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
   margin: 0;
-  padding: 20px;
-  background-color: #d900ff82;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #ffe6f0, #e5eaff);
+  color: #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  text-align: center;
+  padding: 30px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
 }
 
 h1 {
-  color: #ff00bb;
+  font-size: 1.8rem;
+  color: #c86dd7;
+  margin-bottom: 10px;
+}
+
+#today-date {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
 button {
-  padding: 15px 25px;
-  margin: 10px;
-  font-size: 25px;
-  background-color: #ff00bb;
-  color: #fff;
+  background-color: #c86dd7;
+  color: white;
   border: none;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #d900ff;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Styles pour le conteneur de la caméra */
-#media-area {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+button.clicked {
+  background-color: #6fcf97;
 }
 
-#camera-container {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+#confirmation-message {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #6fcf97;
+  font-weight: bold;
 }
 
-#camera-container video {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover; /* Pour ajuster la vidéo à son conteneur */
-}
-
-/* Styles pour les boutons sur la caméra */
-#camera-container button {
-  position: absolute;
-  bottom: 20px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-#switch-camera-btn {
-  left: 20px;
-}
-
-#capture-btn {
-  right: 20px;
-}
-
-#media-area img {
-  width: 100%;
-  height: auto;
-  margin-top: 20px;
-  display: block;
-}
-
-#motivational-phrase {
-  font-size: 28px;
+.quote {
+  margin-top: 30px;
   font-style: italic;
-  margin-bottom: 20px;
-  color: #d900ff;
+  color: #a366b3;
+  font-size: 1.1rem;
 }
-
