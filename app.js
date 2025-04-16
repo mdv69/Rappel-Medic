@@ -28,3 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     message.textContent = `Médicaments pris le ${formattedDate}.`;
   });
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').then(reg => {
+    reg.update(); // 🔁 force l'update du SW au démarrage
+  });
+}
+
