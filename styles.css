@@ -31,12 +31,6 @@ h1 {
   margin-bottom: 15px;
 }
 
-/* Date du jour */
-#today-date {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
 /* Bouton principal */
 button {
   background-color: #d94ec2;
