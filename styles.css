@@ -16,19 +16,20 @@ body {
 
 
 .container {
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
   text-align: center;
+  padding: 30px;
+  max-width: 90%;
+  width: 350px; /* Tu peux ajuster à 300px ou 320px selon ton fond */
+  margin: 0 auto;
 }
+
 
 
 /* Titre */
 h1 {
-  font-size: 1.8rem;
-  color: #d94ec2;
-  margin-bottom: 15px;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  word-wrap: break-word;
 }
 
 /* Bouton principal */
