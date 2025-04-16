@@ -6,12 +6,14 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: #444;
+  color: #fff;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 
 /* Encadré doux centré et semi-transparent */
 .container {
